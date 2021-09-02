@@ -1,4 +1,5 @@
 <?php
+require_once('vendor/autoload.php');
 use PiPHP\GPIO\GPIO;
 use PiPHP\GPIO\Pin\PinInterface;
 

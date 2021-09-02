@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "seguimientos",
+  "info": {
+    "name": "seguimiento",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "comentario": {
+      "type": "text"
+    },
+    "tipo": {
+      "type": "enumeration",
+      "enum": [
+        "comentario",
+        "problema",
+        "solucion"
+      ]
+    }
+  }
+}
