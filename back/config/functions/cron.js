@@ -82,8 +82,8 @@ module.exports = {
     console.log(`${new Date().toISOString()} sacada imagen`);
   },
   /* 1 a la hora */
-  '0 * * * *': async () => {
-    console.log("sacando temperatura y humedad");
+  '50 * * * *': async () => {
+    console.log(`${new Date().toISOString()} temperatura y humedad`);
     const data = await makeRequest("http://growpi/temphum.php");
     console.log(data);
     const [temperatura, humedad] = data.split(' ').map(el => parseFloat(el.replace(/[TH]=/gi, ''))); 
@@ -95,7 +95,6 @@ module.exports = {
         humedad
       }
     );
-
-    console.log("sacada temperatura y humedad");
+    console.log(`${new Date().toISOString()} sacada temperatura y humedad`);
   }
 };
