@@ -35,11 +35,11 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script>
 import gql from "graphql-tag";
 import Vue from "vue";
 
-export default Vue.extend({
+export default ({
   data: function () {
     return { tipoSelected: 'comentario', comentario: '' };
   },

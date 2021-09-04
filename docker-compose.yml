@@ -1,0 +1,16 @@
+version: "3.9"
+    
+services:
+  back:
+    build: ./back
+    restart: always
+    ports:
+      - "1337:1337"
+    
+  front:
+    depends_on:
+      - back
+    build: ./front
+    ports:
+      - "80:8080"
+    restart: always

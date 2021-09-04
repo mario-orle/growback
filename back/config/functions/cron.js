@@ -54,10 +54,10 @@ function makeRequest(url) {
 
 module.exports = {
   /**
-   * Obtenedor de imágenes
+   * Obtenedor de imágenes, una a la hora durante las horas de luz
    */
-  '* * * * *': async () => {
-    console.log("sacando imagen");
+  '10 21,22,23,0,1,2,3,4,5,6,7 * * *': async () => {
+    console.log(`${new Date().toISOString()} sacando imagen`);
     const tmpobj = tmp.fileSync({postfix: '.jpg'});
     const filepath = tmpobj.name;
     const fileurl = "http://192.168.0.19/foto.php";
@@ -79,9 +79,10 @@ module.exports = {
         foto: attachment
       }
     );
-    console.log("sacada imagen");
+    console.log(`${new Date().toISOString()} sacada imagen`);
   },
-  '* * * * *': async () => {
+  /* 1 a la hora */
+  '0 * * * *': async () => {
     console.log("sacando temperatura y humedad");
     const data = await makeRequest("http://192.168.0.19/temphum.php");
     console.log(data);
@@ -94,6 +95,13 @@ module.exports = {
         humedad
       }
     );
+
+    if (temperatura > 20) {
+      await makeRequest("http://192.168.0.19/fanon.php");
+    } else {
+      await makeRequest("http://192.168.0.19/fanoff.php");
+
+    }
     console.log("sacada temperatura y humedad");
   }
 };
