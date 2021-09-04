@@ -56,7 +56,7 @@ module.exports = {
   /**
    * Obtenedor de imágenes, una a la hora durante las horas de luz
    */
-  '10 21,22,23,0,1,2,3,4,5,6,7 * * *': async () => {
+  '10 18-10 * * *': async () => {
     console.log(`${new Date().toISOString()} sacando imagen`);
     const tmpobj = tmp.fileSync({postfix: '.jpg'});
     const filepath = tmpobj.name;
@@ -81,8 +81,8 @@ module.exports = {
     );
     console.log(`${new Date().toISOString()} sacada imagen`);
   },
-  /* 1 a la hora */
-  '59 * * * *': async () => {
+  /* cada 10 mins */
+  '*/10 * * * *': async () => {
     console.log(`${new Date().toISOString()} temperatura y humedad`);
     const data = await makeRequest("http://growpi/temphum.php");
     console.log(data);
