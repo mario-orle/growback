@@ -60,7 +60,7 @@ module.exports = {
     console.log(`${new Date().toISOString()} sacando imagen`);
     const tmpobj = tmp.fileSync({postfix: '.jpg'});
     const filepath = tmpobj.name;
-    const fileurl = "http://192.168.0.19/foto.php";
+    const fileurl = "http://growpi/foto.php";
     await downloadImage(fileurl, filepath);
 
     const fileStat = fs.statSync(filepath);
@@ -84,7 +84,7 @@ module.exports = {
   /* 1 a la hora */
   '0 * * * *': async () => {
     console.log("sacando temperatura y humedad");
-    const data = await makeRequest("http://192.168.0.19/temphum.php");
+    const data = await makeRequest("http://growpi/temphum.php");
     console.log(data);
     const [temperatura, humedad] = data.split(' ').map(el => parseFloat(el.replace(/[TH]=/gi, ''))); 
 
@@ -96,12 +96,6 @@ module.exports = {
       }
     );
 
-    if (temperatura > 20) {
-      await makeRequest("http://192.168.0.19/fanon.php");
-    } else {
-      await makeRequest("http://192.168.0.19/fanoff.php");
-
-    }
     console.log("sacada temperatura y humedad");
   }
 };
