@@ -82,7 +82,7 @@ module.exports = {
     console.log(`${new Date().toISOString()} sacada imagen`);
   },
   /* 1 a la hora */
-  '55 * * * *': async () => {
+  '59 * * * *': async () => {
     console.log(`${new Date().toISOString()} temperatura y humedad`);
     const data = await makeRequest("http://growpi/temphum.php");
     console.log(data);
