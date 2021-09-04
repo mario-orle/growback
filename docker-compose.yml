@@ -5,7 +5,7 @@ services:
     build: ./back
     restart: always
     volumes:
-        - ./data:/app/data
+        - ../data:/app/data
     ports:
       - "1337:1337"
     
