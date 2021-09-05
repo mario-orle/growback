@@ -56,7 +56,7 @@ module.exports = {
   /**
    * Obtenedor de imágenes, una a la hora durante las horas de luz
    */
-  '20 0,1,2,3,4,5,6,7,19,20,21,22,23 * * *': async () => {
+  '40 0,1,2,3,4,5,6,7,19,20,21,22,23 * * *': async () => {
     console.log(`${new Date().toISOString()} sacando imagen`);
     const tmpobj = tmp.fileSync({postfix: '.jpg'});
     const filepath = tmpobj.name;
