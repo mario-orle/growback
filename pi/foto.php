@@ -1,7 +1,7 @@
 <?php
 exec("rm /var/www/html/foto.jpg");
-exec("fswebcam -r1280x960 /var/www/html/foto.jpg");
-exec("fswebcam -r1280x960 /var/www/html/foto.jpg");
+exec("fswebcam -r 1280x960 /var/www/html/foto.jpg");
+exec("fswebcam -r 1280x960 /var/www/html/foto.jpg");
 
 // open the file in a binary mode
 $name = '/var/www/html/foto.jpg';
