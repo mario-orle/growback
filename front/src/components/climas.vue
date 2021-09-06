@@ -64,7 +64,10 @@ export default ({
               bounds: 'ticks',
               type: 'time',
               time: {
-                  unit: 'hour'
+                  parser: function () {
+                    console.log(arguments);
+                    return arguments[0]
+                  }
               }
             }],
             yAxes: [{

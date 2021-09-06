@@ -58,28 +58,36 @@ module.exports = {
    */
   '40 0,1,2,3,4,5,19,20,21,22,23 * * *': async () => {
     console.log(`${new Date().toISOString()} sacando imagen`);
-    const tmpobj = tmp.fileSync({postfix: '.jpg'});
-    const filepath = tmpobj.name;
     const fileurl = "http://growpi/foto.php";
-    await downloadImage(fileurl, filepath);
+    tmp.file({postfix: '.jpg'}, function _tempFileCreated(err, path, fd, cleanupCallback) {
+      if (err) throw err;
+      const filepath = tmpobj.name;
+      
+      await downloadImage(fileurl, filepath);
 
-    const fileStat = fs.statSync(filepath);
-    const attachment = await strapi.plugins.upload.services.upload.upload({
-      data: {},
-      files: {
-        path: filepath,
-        name: `foto${new Date().toISOString()}.jpg`,
-        type: 'image/jpg', // mime type
-        size: fileStat.size,
-      },
+      const fileStat = fs.statSync(filepath);
+      const attachment = await strapi.plugins.upload.services.upload.upload({
+        data: {},
+        files: {
+          path: filepath,
+          name: `foto${new Date().toISOString()}.jpg`,
+          type: 'image/jpg', // mime type
+          size: fileStat.size,
+        },
+      });
+      await strapi.query('Fotos').create(
+        {
+          foto: attachment
+        }
+      );
+      console.log(`${new Date().toISOString()} sacada imagen`);
+      // If we don't need the file anymore we could manually call the cleanupCallback
+      // But that is not necessary if we didn't pass the keep option because the library
+      // will clean after itself.
+      cleanupCallback();
     });
+    
 
-    await strapi.query('Fotos').create(
-      {
-        foto: attachment
-      }
-    );
-    console.log(`${new Date().toISOString()} sacada imagen`);
   },
   /* cada 10 mins */
   '*/10 * * * *': async () => {
