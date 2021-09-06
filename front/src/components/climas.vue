@@ -64,7 +64,7 @@ export default ({
               bounds: 'ticks',
               type: 'time',
               time: {
-                  unit: 'minute'
+                  unit: 'hour'
               }
             }],
             yAxes: [{

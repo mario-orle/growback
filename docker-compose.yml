@@ -6,6 +6,7 @@ services:
     restart: always
     volumes:
         - ../data:/app/data
+        - ../public:/app/public
     ports:
       - "1337:1337"
     
