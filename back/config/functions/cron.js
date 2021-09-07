@@ -59,7 +59,7 @@ module.exports = {
   '40 0,1,2,3,4,5,19,20,21,22,23 * * *': async () => {
     console.log(`${new Date().toISOString()} sacando imagen`);
     const fileurl = "http://growpi/foto.php";
-    tmp.file({postfix: '.jpg'}, function _tempFileCreated(err, path, fd, cleanupCallback) {
+    tmp.file({postfix: '.jpg'}, async function _tempFileCreated(err, path, fd, cleanupCallback) {
       if (err) throw err;
       const filepath = tmpobj.name;
       
