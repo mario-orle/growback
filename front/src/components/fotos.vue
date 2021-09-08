@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-carousel>
+    <v-carousel cycle interval="500">
       <v-carousel-item
         v-for="(foto) in fotosConnection.values"
         :key="foto.id"
