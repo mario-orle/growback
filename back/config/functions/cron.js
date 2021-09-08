@@ -56,7 +56,7 @@ module.exports = {
   /**
    * Obtenedor de imágenes, una a la hora durante las horas de luz
    */
-  '0 0,1,2,3,4,5,6,7,8,9,19,20,21,22,23 * * *': {
+  '5 0,1,2,3,4,5,6,7,8,9,19,20,21,22,23 * * *': {
     task: async () => {
       console.log(`${new Date().toISOString()} sacando imagen`);
       const fileurl = "http://growpi/foto.php";
@@ -93,8 +93,8 @@ module.exports = {
     options: {
       tz: 'Europe/Madrid'
     }
-  }
-  /* cada 10 mins */
+  },
+  /* cada 10 mins, no necesita timezone */
   '*/10 * * * *': async () => {
     console.log(`${new Date().toISOString()} temperatura y humedad`);
     const data = await makeRequest("http://growpi/temphum.php");
