@@ -56,7 +56,7 @@ module.exports = {
   /**
    * Obtenedor de imágenes, una a la hora durante las horas de luz
    */
-  '5 0,1,2,3,4,5,6,7,8,9,19,20,21,22,23 * * *': {
+  '10 0,1,2,3,4,5,6,7,8,9,19,20,21,22,23 * * *': {
     task: async () => {
       console.log(`${new Date().toISOString()} sacando imagen`);
       const fileurl = "http://growpi/foto.php";
@@ -86,7 +86,7 @@ module.exports = {
       // If we don't need the file anymore we could manually call the cleanupCallback
       // But that is not necessary if we didn't pass the keep option because the library
       // will clean after itself.
-      file.cleanupCallbackSync();
+      file.removeCallback();
       
 
     },
