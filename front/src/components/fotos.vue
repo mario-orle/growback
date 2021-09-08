@@ -1,6 +1,13 @@
 <template>
   <v-container>
-    <img v-for="foto in fotosConnection.values" :src="'http://cacho:1337' + foto.foto.url" :key="foto.id" />
+    <v-carousel>
+      <v-carousel-item
+        v-for="(foto) in fotosConnection.values"
+        :key="foto.id"
+      >
+        <img :src="'http://cacho:1337' + foto.foto.url" :key="foto.id" />
+      </v-carousel-item>
+    </v-carousel>
   </v-container>
 </template>
 
