@@ -1,41 +1,6 @@
 <template>
   <v-container>
-    <v-timeline v-if="seguimientosConnection && seguimientosConnection.values" align-top dense> 
-      <template v-for="seguimiento, idx in seguimientosConnection.values">
-        <v-timeline-item
-          v-if="idx < seguimientosConnection.values.length - 1"
-          small
-          :key="seguimiento.id"
-          :color="seguimiento.tipo === 'comentario' ? 'blue': 'red'"
-        >
-          <v-row>
-            <v-col cols="3">
-              <strong class="created">{{format(seguimiento.created_at)}}</strong>
-            </v-col>
-            <v-col>
-              {{seguimiento.comentario}}
-            </v-col>
-          </v-row>
-        
-        </v-timeline-item>
-        <v-timeline-item
-          v-else
-          small
-          :key="seguimiento.id"
-          :color="seguimiento.tipo === 'comentario' ? 'blue': 'red'"
-        >
-          <v-row>
-            <v-col cols="3">
-              <strong class="created">{{format(seguimiento.created_at)}}</strong>
-            </v-col>
-            <v-col>
-              {{seguimiento.comentario}}
-            </v-col>
-          </v-row>
-        
-        </v-timeline-item>
-      </template>
-    </v-timeline>
+    <img v-for="foto in fotosConnection.values" :src="'http://cacho:1337' + foto.foto.url" :key="foto.id" />
   </v-container>
 </template>
 
@@ -48,8 +13,6 @@ import { es } from 'date-fns/locale'
 export default ({
   data: function () {
     return { 
-      tipoSelected: 'comentario', 
-      comentario: '',
       limit: 10,
       start: 0
     };
@@ -87,13 +50,16 @@ export default ({
     }
   },
   apollo: {
-    seguimientosConnection: {
-      query: gql`query seguimientosConnection($limit: Int!, $start: Int!) {
-        seguimientosConnection(sort: "created_at:DESC", limit: $limit, start: $start) {
+    fotosConnection: {
+      query: gql`query fotosConnection($limit: Int!, $start: Int!) {
+        fotosConnection(sort: "created_at:DESC", limit: $limit, start: $start) {
           values {
             id
-            tipo
-            comentario
+            foto {
+              url
+              width
+              height
+            }
             created_at
           }
           aggregate {

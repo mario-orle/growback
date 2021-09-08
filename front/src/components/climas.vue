@@ -4,13 +4,14 @@ import { Line } from 'vue-chartjs'
 
 import gql from "graphql-tag";
 import Vue from "vue";
-import {formatDistanceToNow} from 'date-fns';
+import {formatDistanceToNow, format} from 'date-fns';
 import { es } from 'date-fns/locale'
 
 export default ({
   extends: Line,
   data() {
     return {
+      hardLimit: 5000,
       start: 0,
       limit: 100,
       data: {
@@ -50,24 +51,24 @@ export default ({
         }
       },
       update(res) {
-        console.log(res);
         const labels = res.climasConnection.values.map(r => new Date(r.created_at));
         const dataTemp = res.climasConnection.values.map(r => r.temperatura);
         const dataHum = res.climasConnection.values.map(r => r.humedad);
         this.data.labels = [...this.data.labels, ...labels];
         this.data.datasets[0].data = [...this.data.datasets[0].data, ...dataTemp];
         this.data.datasets[1].data = [...this.data.datasets[1].data, ...dataHum];
-
+        let prevDay = 0;
+        let day = 0;
         const options = {
           scales: {
             xAxes: [{
               bounds: 'ticks',
               type: 'time',
               time: {
-                  parser: function () {
-                    console.log(arguments);
-                    return arguments[0]
-                  }
+              unit: 'hour',
+                displayFormats: {
+                  hour: 'HH:mm'
+                }
               }
             }],
             yAxes: [{
@@ -92,7 +93,7 @@ export default ({
 
         if(res.climasConnection.aggregate.totalCount > this.start + this.limit) {
           this.start += this.limit;
-
+  console.log(this.start);
         } else {
           this.renderChart(this.data, options);
         }

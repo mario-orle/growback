@@ -9,32 +9,37 @@
         </v-col>
 
       </v-row>
-      <v-row v-else>
-        <v-col cols="4">
-          <v-dialog
-            width="500"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                color="red lighten-2"
-                dark
-                v-bind="attrs"
-                v-on="on"
-              >
-                Add
-              </v-btn>
-            </template>
-            <v-card>
-              <SeguimientoForm />   
-            </v-card>
-          </v-dialog>
-          <SeguimientoList />
+      <template v-else>
+        <v-row>
+          <v-col cols="4">
+            <v-dialog
+              width="500"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="red lighten-2"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  Add
+                </v-btn>
+              </template>
+              <v-card>
+                <SeguimientoForm />   
+              </v-card>
+            </v-dialog>
+            <SeguimientoList />
 
-        </v-col>
-        <v-col cols="8">
-          <Climas />
-        </v-col>
-      </v-row>
+          </v-col>
+          <v-col cols="8">
+            <Climas />
+          </v-col>
+        </v-row>
+        <v-row>
+          <Fotos />
+        </v-row>
+      </template>
     </v-container>
 </template>
 
@@ -44,13 +49,13 @@ import Vue from "vue";
 import SeguimientoForm from '../components/seguimiento-form.vue';
 import SeguimientoList from '../components/seguimiento-list.vue';
 import Climas from '../components/climas.vue';
+import Fotos from '../components/fotos.vue';
 
 export default Vue.extend({
   name: "Home",
-  components: {SeguimientoForm, SeguimientoList, Climas},
+  components: {SeguimientoForm, SeguimientoList, Climas, Fotos},
   methods: {
     login() {
-      console.log(this);
       this.$apollo.mutate({
         // Query
         mutation: gql`mutation taka($user: String!, $pwd: String!) {
