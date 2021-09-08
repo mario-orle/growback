@@ -56,36 +56,36 @@ module.exports = {
   /**
    * Obtenedor de imágenes, una a la hora durante las horas de luz
    */
-  '40 0,1,2,3,4,5,6,7,8,9,19,20,21,22,23 * * *': async () => {
+  '50 0,1,2,3,4,5,6,7,8,9,19,20,21,22,23 * * *': async () => {
     console.log(`${new Date().toISOString()} sacando imagen`);
     const fileurl = "http://growpi/foto.php";
-    tmp.file({postfix: '.jpg'}, async function _tempFileCreated(err, path, fd, cleanupCallback) {
-      if (err) throw err;
-      const filepath = path;
-      
-      await downloadImage(fileurl, filepath);
 
-      const fileStat = fs.statSync(filepath);
-      const attachment = await strapi.plugins.upload.services.upload.upload({
-        data: {},
-        files: {
-          path: filepath,
-          name: `foto${new Date().toISOString()}.jpg`,
-          type: 'image/jpg', // mime type
-          size: fileStat.size,
-        },
-      });
-      await strapi.query('Fotos').create(
-        {
-          foto: attachment
-        }
-      );
-      console.log(`${new Date().toISOString()} sacada imagen`);
-      // If we don't need the file anymore we could manually call the cleanupCallback
-      // But that is not necessary if we didn't pass the keep option because the library
-      // will clean after itself.
-      cleanupCallback();
+    const file = tmp.fileSync({keep: true, postfix: '.jpg'});
+
+    const filepath = file.name;
+    
+    await downloadImage(fileurl, filepath);
+
+    const fileStat = fs.statSync(filepath);
+    const attachment = await strapi.plugins.upload.services.upload.upload({
+      data: {},
+      files: {
+        path: filepath,
+        name: `foto${new Date().toISOString()}.jpg`,
+        type: 'image/jpg', // mime type
+        size: fileStat.size,
+      },
     });
+    await strapi.query('Fotos').create(
+      {
+        foto: attachment
+      }
+    );
+    console.log(`${new Date().toISOString()} sacada imagen`);
+    // If we don't need the file anymore we could manually call the cleanupCallback
+    // But that is not necessary if we didn't pass the keep option because the library
+    // will clean after itself.
+    file.cleanupCallbackSync();
     
 
   },
