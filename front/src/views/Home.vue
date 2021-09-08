@@ -1,81 +1,71 @@
 <template>
-    <v-container>
-      <v-row v-if="!$store.state.token">
-        <v-col
-          cols="12"
-          md="12"
-        >
-          <v-btn @click="login">Login</v-btn>
+  <v-container>
+    <v-row v-if="!$store.state.token">
+      <v-col cols="12" md="12">
+        <v-btn @click="login">Login</v-btn>
+      </v-col>
+    </v-row>
+    <template v-else>
+      <v-row>
+        <v-col cols="4">
+          <v-dialog width="500">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on">
+                Add
+              </v-btn>
+            </template>
+            <v-card>
+              <SeguimientoForm />
+            </v-card>
+          </v-dialog>
+          <SeguimientoList />
         </v-col>
-
+        <v-col cols="8">
+          <Climas />
+        </v-col>
       </v-row>
-      <template v-else>
-        <v-row>
-          <v-col cols="4">
-            <v-dialog
-              width="500"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="red lighten-2"
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  Add
-                </v-btn>
-              </template>
-              <v-card>
-                <SeguimientoForm />   
-              </v-card>
-            </v-dialog>
-            <SeguimientoList />
-
-          </v-col>
-          <v-col cols="8">
-            <Climas />
-          </v-col>
-        </v-row>
-        <v-row>
-          <Fotos />
-        </v-row>
-      </template>
-    </v-container>
+      <v-row>
+        <Fotos />
+      </v-row>
+    </template>
+  </v-container>
 </template>
 
 <script lang="ts">
 import gql from "graphql-tag";
 import Vue from "vue";
-import SeguimientoForm from '../components/seguimiento-form.vue';
-import SeguimientoList from '../components/seguimiento-list.vue';
-import Climas from '../components/climas.vue';
-import Fotos from '../components/fotos.vue';
+import SeguimientoForm from "../components/seguimiento-form.vue";
+import SeguimientoList from "../components/seguimiento-list.vue";
+import Climas from "../components/climas.vue";
+import Fotos from "../components/fotos.vue";
 
 export default Vue.extend({
   name: "Home",
-  components: {SeguimientoForm, SeguimientoList, Climas, Fotos},
+  components: { SeguimientoForm, SeguimientoList, Climas, Fotos },
   methods: {
     login() {
-      this.$apollo.mutate({
-        // Query
-        mutation: gql`mutation taka($user: String!, $pwd: String!) {
-            login (input: { identifier: $user, password: $pwd }) {
-              jwt
+      this.$apollo
+        .mutate({
+          // Query
+          mutation: gql`
+            mutation taka($user: String!, $pwd: String!) {
+              login(input: { identifier: $user, password: $pwd }) {
+                jwt
+              }
             }
-          }
-        `,
-        // Parameters
-        variables: {
-          user: 'graphql',
-          pwd: 'abbyl40L',
-        },
-
-      }).then((res: any) => {
-        const jwt = res.data.login.jwt;
-        this.$store.commit("setToken", jwt);
-        localStorage.setItem("token", jwt);
-      });
-    }
+          `,
+          // Parameters
+          variables: {
+            user: "graphql",
+            pwd: "abbyl40L",
+          },
+        })
+        .then((res: any) => {
+          const jwt = res.data.login.jwt;
+          this.$store.commit("setToken", jwt);
+          localStorage.setItem("token", jwt);
+        });
+    },
   },
 });
 </script>
