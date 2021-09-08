@@ -56,12 +56,12 @@ module.exports = {
   /**
    * Obtenedor de imágenes, una a la hora durante las horas de luz
    */
-  '40 0,1,2,3,4,5,19,20,21,22,23 * * *': async () => {
+  '40 0,1,2,3,4,5,6,7,8,9,19,20,21,22,23 * * *': async () => {
     console.log(`${new Date().toISOString()} sacando imagen`);
     const fileurl = "http://growpi/foto.php";
     tmp.file({postfix: '.jpg'}, async function _tempFileCreated(err, path, fd, cleanupCallback) {
       if (err) throw err;
-      const filepath = tmpobj.name;
+      const filepath = path;
       
       await downloadImage(fileurl, filepath);
 
