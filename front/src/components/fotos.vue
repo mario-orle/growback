@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-carousel height="960" width="1280" cycle interval="500" v-if="fotosConnection && fotosConnection.values">
+    <v-carousel height="960" width="1280" cycle interval="200" v-if="fotosConnection && fotosConnection.values">
       <v-carousel-item v-for="foto in fotosConnection.values" :key="foto.id" transition="false">
         <v-img :height="foto.foto.height" :width="foto.foto.width" :src="'http://cacho:1337' + foto.foto.url" :key="foto.id" />
       </v-carousel-item>
