@@ -56,39 +56,44 @@ module.exports = {
   /**
    * Obtenedor de imágenes, una a la hora durante las horas de luz
    */
-  '50 0,1,2,3,4,5,6,7,8,9,19,20,21,22,23 * * *': async () => {
-    console.log(`${new Date().toISOString()} sacando imagen`);
-    const fileurl = "http://growpi/foto.php";
+  '0 0,1,2,3,4,5,6,7,8,9,19,20,21,22,23 * * *': {
+    task: async () => {
+      console.log(`${new Date().toISOString()} sacando imagen`);
+      const fileurl = "http://growpi/foto.php";
 
-    const file = tmp.fileSync({keep: true, postfix: '.jpg'});
+      const file = tmp.fileSync({keep: true, postfix: '.jpg'});
 
-    const filepath = file.name;
-    
-    await downloadImage(fileurl, filepath);
+      const filepath = file.name;
+      
+      await downloadImage(fileurl, filepath);
 
-    const fileStat = fs.statSync(filepath);
-    const attachment = await strapi.plugins.upload.services.upload.upload({
-      data: {},
-      files: {
-        path: filepath,
-        name: `foto${new Date().toISOString()}.jpg`,
-        type: 'image/jpg', // mime type
-        size: fileStat.size,
-      },
-    });
-    await strapi.query('Fotos').create(
-      {
-        foto: attachment
-      }
-    );
-    console.log(`${new Date().toISOString()} sacada imagen`);
-    // If we don't need the file anymore we could manually call the cleanupCallback
-    // But that is not necessary if we didn't pass the keep option because the library
-    // will clean after itself.
-    file.cleanupCallbackSync();
-    
+      const fileStat = fs.statSync(filepath);
+      const attachment = await strapi.plugins.upload.services.upload.upload({
+        data: {},
+        files: {
+          path: filepath,
+          name: `foto${new Date().toISOString()}.jpg`,
+          type: 'image/jpg', // mime type
+          size: fileStat.size,
+        },
+      });
+      await strapi.query('Fotos').create(
+        {
+          foto: attachment
+        }
+      );
+      console.log(`${new Date().toISOString()} sacada imagen`);
+      // If we don't need the file anymore we could manually call the cleanupCallback
+      // But that is not necessary if we didn't pass the keep option because the library
+      // will clean after itself.
+      file.cleanupCallbackSync();
+      
 
-  },
+    },
+    options: {
+      tz: 'Europe/Madrid'
+    }
+  }
   /* cada 10 mins */
   '*/10 * * * *': async () => {
     console.log(`${new Date().toISOString()} temperatura y humedad`);
