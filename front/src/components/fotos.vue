@@ -1,9 +1,11 @@
 <template>
   <v-container>
-    <v-carousel height="960" width="1280" cycle interval="200" v-if="fotosConnection && fotosConnection.values">
-      <v-carousel-item v-for="foto in fotosConnection.values" :key="foto.id" transition="false">
-        <v-img :height="foto.foto.height" :width="foto.foto.width" :src="'http://cacho:1337' + foto.foto.url" :key="foto.id" />
-      </v-carousel-item>
+    <v-carousel :hide-delimiters="true" :hide-delimiter-background="true" height="960" width="1280" cycle interval="200" v-if="fotosConnection && fotosConnection.values" continuous>
+      <template v-for="foto in fotosConnection.values">
+        <v-carousel-item :key="foto.id" v-if="foto.foto.url" transition="false">
+          <img :height="foto.foto.height" :width="foto.foto.width" :src="'http://cacho:1337' + foto.foto.url" :key="foto.id" />
+        </v-carousel-item>
+      </template>
     </v-carousel>
   </v-container>
 </template>
@@ -45,7 +47,7 @@ export default {
             return {
               seguimientosConnection: {
                 __typename:
-                  previousResult.seguimientosConnection.values.__typename,
+                  previousResult.seguimientosConnection.__typename,
                 // Merging the tag list
                 values: [
                   ...previousResult.seguimientosConnection.values,

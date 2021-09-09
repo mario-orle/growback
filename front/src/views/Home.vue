@@ -21,7 +21,14 @@
           <SeguimientoList />
         </v-col>
         <v-col cols="8">
-          <Climas />
+          <Climas :hardLimit="hardLimit" />
+          <select v-model="hardLimit">
+            <option :value="100">100</option>
+            <option :value="200">200</option>
+            <option :value="500">500</option>
+            <option :value="1000">1000</option>
+            <option :value="2000">2000</option>
+          </select>
         </v-col>
       </v-row>
       <v-row>
@@ -41,6 +48,11 @@ import Fotos from "../components/fotos.vue";
 
 export default Vue.extend({
   name: "Home",
+  data() {
+    return {
+      hardLimit: 200
+    }
+  },
   components: { SeguimientoForm, SeguimientoList, Climas, Fotos },
   methods: {
     login() {

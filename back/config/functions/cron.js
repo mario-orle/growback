@@ -56,7 +56,7 @@ module.exports = {
   /**
    * Obtenedor de imágenes, una a la hora durante las horas de luz
    */
-  '10 0,1,2,3,4,5,6,7,8,9,19,20,21,22,23 * * *': {
+  '40 0,1,2,3,4,5,6,7,8,9,19,20,21,22,23 * * *': {
     task: async () => {
       console.log(`${new Date().toISOString()} sacando imagen`);
       const fileurl = "http://growpi/foto.php";

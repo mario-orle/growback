@@ -8,9 +8,11 @@ import { es } from "date-fns/locale";
 
 export default {
   extends: Line,
+  props: {
+    hardLimit: Number
+  },
   data() {
     return {
-      hardLimit: 5000,
       start: 0,
       limit: 100,
       data: {
@@ -31,6 +33,29 @@ export default {
         ],
       },
     };
+  },
+  watch: {
+    hardLimit(newVal, oldVal) {
+      this.data = {
+        labels: [],
+        datasets: [
+          {
+            label: "Temperatura ºC",
+            data: [],
+            borderColor: "#f00",
+            yAxisID: "temp-y-axis",
+          },
+          {
+            label: "Humedad %",
+            data: [],
+            borderColor: "#00f",
+            yAxisID: "hum-y-axis",
+          },
+        ],
+      };
+      this.start = 0;
+      this.$apollo.queries.climas.refetch();
+    }
   },
   apollo: {
     climas: {
@@ -114,7 +139,8 @@ export default {
 
         if (
           res.climasConnection.aggregate.totalCount >
-          this.start + this.limit
+          this.start + this.limit &&
+          this.start + this.limit < this.hardLimit
         ) {
           this.start += this.limit;
           console.log(this.start);
